@@ -1,5 +1,5 @@
 package com.example.biblioteca.model;
-
+//branch motebook
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +18,7 @@ public class Autor {
 
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
-//adesao
+
     @Column(name = "nacionalidade", length = 50, nullable = false)
     private String nacionalidade;
 
