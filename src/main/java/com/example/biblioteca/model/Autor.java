@@ -1,5 +1,4 @@
 package com.example.biblioteca.model;
-//branch motebook
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
