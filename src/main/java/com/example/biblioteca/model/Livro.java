@@ -9,27 +9,29 @@ import java.util.UUID;
 @Table(name = "Livro")
 public class Livro {
 
-    private String isbn;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_autor")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "titulo")
+    @Column(name = "isbn", length = 20, nullable = false)
+    private String isbn;
+
+    @Column(name = "titulo", length = 150, nullable = false )
     private String titulo;
 
-    @Column(name = "data_Publicacao")
+    @Column(name = "data_publicacao", nullable = false)
     private LocalDate dataPublicacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "genero")
+    @Column(name = "genero",length = 30, nullable = false)
     private GeneroLivro genero;
 
-    @Column(name = "preco")
+    @Column(name = "preco", precision = 18, scale = 2, nullable = false)
     private BigDecimal preco;
 
     @ManyToOne
-    @JoinColumn(name = "id_autor")
+    @JoinColumn(name = "id_autor", nullable = false)
     private Autor autor;
 
     public String getIsbn() {
