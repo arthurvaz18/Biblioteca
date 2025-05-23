@@ -3,13 +3,11 @@ package com.example.biblioteca.resource;
 import com.example.biblioteca.model.Autor;
 import com.example.biblioteca.model.dto.AutorDTO;
 import com.example.biblioteca.service.AutorService;
-import lombok.var;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -80,5 +78,23 @@ public class AutorResource {
                         autor.getNacionalidade()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listaAutorDTO);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> atualizar(@PathVariable String id, @RequestBody AutorDTO dto) {
+        UUID idAutor = UUID.fromString(id);
+        Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+
+        if (!autorOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Autor autor = autorOptional.get();
+        autor.setNome(dto.getNome());
+        autor.setDataNascimento(dto.getDataNascimento());
+        autor.setNacionalidade(dto.getNacionalidade());
+
+        autorService.atualizar(autor);
+
+        return ResponseEntity.noContent().build();
     }
 }

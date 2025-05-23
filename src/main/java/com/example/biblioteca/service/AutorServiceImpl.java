@@ -28,6 +28,9 @@ public class AutorServiceImpl implements AutorService {
     public void deletar(Autor autor) {
         autorRepository.delete(autor);
     }
+    public void atualizar(Autor autor) {
+        autorRepository.save(autor);
+    }
 
     @Override
     public List<Autor> pesquisar(String nome, String nacionalidade) {

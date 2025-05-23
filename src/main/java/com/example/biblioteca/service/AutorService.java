@@ -12,8 +12,9 @@ public interface AutorService {
 
     Optional<Autor> obterPorId(UUID idAutor);
 
-
     List<Autor> pesquisar(String nome, String nacionalidade);
 
     void deletar(Autor autor);
+
+    void atualizar(Autor autor);
 }
