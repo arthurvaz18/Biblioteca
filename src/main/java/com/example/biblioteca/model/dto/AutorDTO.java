@@ -29,6 +29,13 @@ public class AutorDTO {
         return autor;
     }
 
+    public AutorDTO(UUID id, String nome, LocalDate dataNascimento, String nacionalidade) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.nacionalidade = nacionalidade;
+    }
+
     public UUID getId() {
         return id;
     }
