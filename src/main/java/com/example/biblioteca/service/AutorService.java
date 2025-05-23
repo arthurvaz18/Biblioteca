@@ -1,17 +1,15 @@
 package com.example.biblioteca.service;
 
 import com.example.biblioteca.model.Autor;
-import com.example.biblioteca.repository.AutorRepository;
-import org.springframework.stereotype.Service;
 
-@Service
-public class AutorService {
-    AutorRepository autorRepository;
+import java.util.Optional;
+import java.util.UUID;
 
-    public AutorService(AutorRepository autorRepository) {
-        this.autorRepository = autorRepository;
-    }
-    public Autor salvar(Autor autor) {
-        return autorRepository.save(autor);
-    }
+public interface AutorService {
+
+    Autor salvar(Autor autorEntidade);
+
+    Optional<Autor> obterPorId(UUID idAutor);
+
+    void deletar(Autor autor);
 }
