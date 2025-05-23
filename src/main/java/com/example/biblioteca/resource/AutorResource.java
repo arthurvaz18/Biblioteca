@@ -3,6 +3,7 @@ package com.example.biblioteca.resource;
 import com.example.biblioteca.model.Autor;
 import com.example.biblioteca.model.dto.AutorDTO;
 import com.example.biblioteca.repository.AutorRepository;
+import com.example.biblioteca.service.AutorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +17,16 @@ import java.net.URI;
 @RequestMapping("/autores")
 public class AutorResource {
 
-    AutorRepository autorRepository;
+    private AutorService autorService;
 
-    public AutorResource(AutorRepository autorRepository) {
-        this.autorRepository = autorRepository;
+    public AutorResource(AutorService autorService) {
+        this.autorService = autorService;
     }
 
     @PostMapping
     public ResponseEntity<Void> salvar(@RequestBody AutorDTO autor) {
         Autor autorEntidade = autor.mapearParaAutor();
-        autorRepository.save(autorEntidade);
+        autorService.salvar(autorEntidade);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
