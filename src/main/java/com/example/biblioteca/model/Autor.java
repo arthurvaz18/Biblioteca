@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
+//branch computador
 @Entity
 @Table(name = "Autor")
 @EntityListeners(AuditingEntityListener.class)
