@@ -93,7 +93,7 @@ public class AutorResource {
         autor.setDataNascimento(dto.getDataNascimento());
         autor.setNacionalidade(dto.getNacionalidade());
 
-        autorService.atualizar(autor);
+        autorService. atualizar(autor);
 
         return ResponseEntity.noContent().build();
     }

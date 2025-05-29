@@ -2,6 +2,7 @@ package com.example.biblioteca.service;
 
 import com.example.biblioteca.model.Autor;
 import com.example.biblioteca.repository.AutorRepository;
+import com.example.biblioteca.validador.AutorValidador;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +14,15 @@ public class AutorServiceImpl implements AutorService {
 
     AutorRepository autorRepository;
 
-    public AutorServiceImpl(AutorRepository autorRepository) {
+    AutorValidador autorValidador;
+
+    public AutorServiceImpl(AutorRepository autorRepository, AutorValidador autorValidador) {
         this.autorRepository = autorRepository;
+        this.autorValidador = autorValidador;
     }
 
     public Autor salvar(Autor autor) {
+        autorValidador.validar(autor);
         return autorRepository.save(autor);
     }
 
@@ -29,6 +34,7 @@ public class AutorServiceImpl implements AutorService {
         autorRepository.delete(autor);
     }
     public void atualizar(Autor autor) {
+        autorValidador.validar(autor);
         autorRepository.save(autor);
     }
 
