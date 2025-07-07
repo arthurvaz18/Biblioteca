@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ErroResposta {
 
-    private String status;
-    private String mensagem;
-    private List<ErroCampo> erros;
+    public String status;
+    public String mensagem;
+    public List<ErroCampo> erros;
 
     public static ErroResposta erroResposta(String mensagem) {
         return new ErroResposta(String.valueOf(HttpStatus.BAD_REQUEST.value()),
@@ -42,11 +42,11 @@ public class ErroResposta {
         this.status = status;
     }
 
-    public String getMessage() {
+    public String getMensagem() {
         return mensagem;
     }
 
-    public void setMessage(String mensagem) {
+    public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
 

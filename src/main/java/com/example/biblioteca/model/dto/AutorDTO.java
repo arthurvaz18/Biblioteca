@@ -2,13 +2,17 @@ package com.example.biblioteca.model.dto;
 
 import com.example.biblioteca.model.Autor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class AutorDTO {
     private UUID id;
+    @NotBlank(message = "O campo é Obrigatório")
     private String nome;
+    @NotBlank(message = "O campo é Obrigatório")
     private LocalDate dataNascimento;
+    @NotBlank(message = "O campo é Obrigatório")
     private String nacionalidade;
 
     public AutorDTO() {

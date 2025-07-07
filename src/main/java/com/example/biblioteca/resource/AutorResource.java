@@ -1,12 +1,16 @@
 package com.example.biblioteca.resource;
 
+import com.example.biblioteca.exceptions.RegistroDuplicadoException;
 import com.example.biblioteca.model.Autor;
 import com.example.biblioteca.model.dto.AutorDTO;
+import com.example.biblioteca.resource.dto.ErroResposta;
 import com.example.biblioteca.service.AutorService;
+import lombok.var;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +28,19 @@ public class AutorResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody AutorDTO autor) {
-        Autor autorEntidade = autor.mapearParaAutor();
-        autorService.salvar(autorEntidade);
+    public ResponseEntity<?> salvar(@RequestBody @Valid AutorDTO autor) {
+        try {
+            Autor autorEntidade = autor.mapearParaAutor();
+            autorService.salvar(autorEntidade);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(autorEntidade.getId()).toUri();
-        return ResponseEntity.created(location).build();
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(autorEntidade.getId()).toUri();
+            return ResponseEntity.created(location).build();
+        } catch (RegistroDuplicadoException e) {
+            ErroResposta erroDTO = ErroResposta.conflito(e.getMessage());
+            return ResponseEntity.status(Integer.parseInt(erroDTO.getStatus())).body(erroDTO);
+        }
     }
 
     @GetMapping("{id}")
@@ -66,8 +75,7 @@ public class AutorResource {
     @GetMapping
     public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
-            @RequestParam(value = "nacionalidade", required = false) String nacionalidade)
-    {
+            @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
         List<Autor> autores = autorService.pesquisar(nome, nacionalidade);
         List<AutorDTO> listaAutorDTO = autores
                 .stream()
@@ -81,20 +89,26 @@ public class AutorResource {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable String id, @RequestBody AutorDTO dto) {
-        UUID idAutor = UUID.fromString(id);
-        Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+    public ResponseEntity<?> atualizar(@PathVariable String id, @RequestBody AutorDTO dto) {
+        try {
+            UUID idAutor = UUID.fromString(id);
+            Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
 
-        if (!autorOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+            if (!autorOptional.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            Autor autor = autorOptional.get();
+            autor.setNome(dto.getNome());
+            autor.setDataNascimento(dto.getDataNascimento());
+            autor.setNacionalidade(dto.getNacionalidade());
+
+            autorService.atualizar(autor);
+
+            return ResponseEntity.noContent().build();
+        } catch (RegistroDuplicadoException e) {
+            ErroResposta erroDTO = ErroResposta.conflito(e.getMessage());
+            return ResponseEntity.status(Integer.parseInt(erroDTO.getStatus())).body(erroDTO);
         }
-        Autor autor = autorOptional.get();
-        autor.setNome(dto.getNome());
-        autor.setDataNascimento(dto.getDataNascimento());
-        autor.setNacionalidade(dto.getNacionalidade());
-
-        autorService. atualizar(autor);
-
-        return ResponseEntity.noContent().build();
     }
+
 }
